@@ -15,6 +15,11 @@ namespace ETicaretAPI.Persistence.Repositories
     {
         private readonly ETicaretAPIDbContext _context;
 
+       public ReadRepository(ETicaretAPIDbContext context)
+        {
+            _context = context;
+        }
+
         public DbSet<T> Table => _context.Set<T>();
 
         public IQueryable<T> GetAll()
