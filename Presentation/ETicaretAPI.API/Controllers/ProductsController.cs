@@ -15,23 +15,22 @@ namespace ETicaretAPI.API.Controllers
         readonly private ICustomerWriteRepository _customerWriteRepository;
 
         readonly private IOrderWriteRepository _orderWriteRepository;
+        readonly private IOrderReadRepository _orderReadRepository;
 
-        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IOrderWriteRepository orderWriteRepository, ICustomerWriteRepository customerWriteRepository  )
+        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IOrderWriteRepository orderWriteRepository, ICustomerWriteRepository customerWriteRepository, IOrderReadRepository orderReadRepository)
         {
             _productWriteRepository = productWriteRepository;
             _productReadRepository = productReadRepository;
             _orderWriteRepository = orderWriteRepository;
             _customerWriteRepository = customerWriteRepository;
+            _orderReadRepository = orderReadRepository;
         }
 
         [HttpGet]
         public async Task Get()
         {
-            var customerId = Guid.NewGuid();
-            await _customerWriteRepository.AddAsync(new() { Id = customerId, Name = "Atakan"});
-
-          await  _orderWriteRepository.AddAsync(new() { Description = "bla bla bla", Adress = "Ankara,  Keçiören", CustomerId = customerId });
-            await _orderWriteRepository.AddAsync(new() { Description = "bla bla bla 2", Adress = "Ankara,  Çankaya", CustomerId = customerId });
+           Order order = await _orderReadRepository.GetByIdAsync("ad43c8f8-3e2c-4e88-8e2f-eb5878765c97");
+            order.Adress = "İstanbul";
             await _orderWriteRepository.SaveAsync();
         }
     }
